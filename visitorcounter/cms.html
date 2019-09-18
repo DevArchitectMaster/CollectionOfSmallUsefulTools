@@ -1,0 +1,88 @@
+<script>
+
+    /*********************************************/
+    /*     I N C R E M E N T   C O U N T E R     */
+    /*********************************************/
+
+    var customerKey = "felix";
+    var counter = 1;
+
+    var uniqueUser = false;
+
+    var counterApiUrl = "counterAPI.php";
+    var ipAddressApiUrl = "ipAPI.php";
+
+    if(uniqueUser) {
+        if (typeof(Storage) !== "undefined") {
+            /* determine ip address */
+            var uip;
+            var request = new XMLHttpRequest();
+            if(request != null) {
+                request.open("GET", ipAddressApiUrl, true);
+                request.send(null);
+                request.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        uip = this.responseText;
+                    }
+                }
+            }
+
+            /* count only unique users */
+            if (!sessionStorage.uuid) {
+                sendRequest(customerKey, counter);
+                sessionStorage.uuid = uip;
+                console.log("### INFO: first visit of a new unique user ###");
+            } else {
+                console.log("### INFO: another visit by a returning unique user ###");
+            }
+        } else {
+            console.error("### ERROR: No Web Storage support ###");
+        }        
+    } else {
+        sendRequest(customerKey, counter);
+        console.log("### INFO: new visit of a unkown user ###");
+    }
+
+    function sendRequest(customerKey, counter) {
+        var request = new XMLHttpRequest();
+        request.open("POST", counterApiUrl, true);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send("customerKey=" + customerKey + "&counter=" + counter);
+        console.log("### INFO: sendRequest => customerKey=" + customerKey + "&counter=" + counter + " ###");
+
+        var response = null;
+        request.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                response = this.responseText;
+                console.log("### INFO: receiveResponse => " + response + " ###");
+            }
+        };
+        return response;
+    }
+
+
+
+
+
+    /*********************************************/
+    /*          R E A D   C O U N T E R          */
+    /*********************************************/
+
+    var customerKey = "felix";
+
+    var counterApiUrl = "counterAPI.php";
+
+    var request = new XMLHttpRequest();
+    request.open("GET", counterApiUrl + "?customerKey=" + customerKey, true);
+    request.send();
+
+    var response = -1;
+    request.onreadystatechange = function() {
+        if(this.readyState == 4 && this.status == 200) {
+            response = this.responseText;
+            document.write(response);
+            console.log("### INFO: receiveResponse => " + response + " ###");
+        }
+    };
+
+</script>
