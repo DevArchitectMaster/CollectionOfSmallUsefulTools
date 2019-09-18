@@ -1,0 +1,6 @@
+# Unprotecting Content
+Satisfy Any
+Allow from all
+
+# Cross-Origin Resource Sharing (CORS) Response Header
+Header set Access-Control-Allow-Origin "*"
