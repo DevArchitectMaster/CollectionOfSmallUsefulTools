@@ -8,7 +8,7 @@
     var customerKey = "temp";
     var counter = 1;
 
-    var uniqueUser = false;
+    var uniqueUser = true;
 
     var counterApiUrl = "counterAPI.php";
     var ipAddressApiUrl = "ipAPI.php";
@@ -62,33 +62,6 @@
             };
             return response;
         }
-    }
-
-
-
-
-
-    /*********************************************/
-    /*          R E A D   C O U N T E R          */
-    /*********************************************/
-
-    var customerKey = "temp";
-
-    var counterApiUrl = "counterAPI.php";
-
-    var request = new XMLHttpRequest();
-    if(request != null) {
-        request.open("GET", counterApiUrl + "?customerKey=" + customerKey, true);
-        request.send();
-
-        var response = -1;
-        request.onreadystatechange = function() {
-            if(this.readyState == 4 && this.status == 200) {
-                response = this.responseText;
-                document.write(response);
-                console.log("### INFO: receiveResponse => " + response + " ###");
-            }
-        };
     }
 
 </script>

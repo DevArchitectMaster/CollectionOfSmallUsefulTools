@@ -1,4 +1,5 @@
 <?php
+    header('Content-Type: text/html; charset=utf-8');
 
     /* POST: increment counter */
     if($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -13,6 +14,11 @@
             } else {
                 file_put_contents($file, $content);
             }
+
+            $response = "increment counter (+1) to ".$content;
+            header('Content-Type: text/plain');
+            header('Message-Exchange-Typ: Response');
+            echo $response;
         }
     }
 
@@ -27,7 +33,7 @@
                 $content = "=== ERROR 404: customerKey counter does not exist ===";
             }
             header('Content-Type: text/plain');
-            //header($content);
+            header('Message-Exchange-Typ: Response');
             echo $content;
         }
     }
